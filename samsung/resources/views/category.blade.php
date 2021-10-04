@@ -49,33 +49,19 @@
 
 <div class="container">
     <div class="starter-template">
-        <div class="panel">
-            <a href="https://internet-shop.tmweb.ru/mobiles">
-                <img src="http://internet-shop.tmweb.ru/storage/categories/mobile.jpg">
-                <h2>Мобильные телефоны</h2>
-            </a>
-            <p>
-                В этом разделе вы найдёте самые популярные мобильные телефонамы по отличным ценам!
-            </p>
-        </div>
-        <div class="panel">
-            <a href="https://internet-shop.tmweb.ru/portable">
-                <img src="http://internet-shop.tmweb.ru/storage/categories/portable.jpg">
-                <h2>Портативная техника</h2>
-            </a>
-            <p>
-                Раздел с портативной техникой.
-            </p>
-        </div>
-        <div class="panel">
-            <a href="https://internet-shop.tmweb.ru/appliances">
-                <img src="http://internet-shop.tmweb.ru/storage/categories/appliance.jpg">
-                <h2>Бытовая техника</h2>
-            </a>
-            <p>
-                Раздел с бытовой техникой
-            </p>
-        </div>
+        @foreach($category as $categories)
+
+            <div class="panel">
+                <a href="/{{$categories->code}}">
+                    <img src="http://internet-shop.tmweb.ru/storage/categories/mobile.jpg">
+                    <h2>{{$categories->name}}</h2>
+                </a>
+                <p>
+                    {{$categories->description}}
+                </p>
+            </div>
+
+        @endforeach
     </div>
 </div>
 </body>

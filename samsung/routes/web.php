@@ -13,14 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/category', function () {
-    return view('category');
-});
+Route::get('/', '\App\Http\Controllers\MainController@index');
+Route::get('/category', '\App\Http\Controllers\MainController@category');
+Route::get('/{categories?}', '\App\Http\Controllers\MainController@categories');
+Route::get('/mobiles/{product?}', '\App\Http\Controllers\MainController@product');
 
-Route::get('/', function () {
-    return view('index');
-});
 
-Route::get('/mobiles/iphone_x_64', function () {
-    return view('product');
-});
