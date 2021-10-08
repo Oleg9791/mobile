@@ -2,21 +2,6 @@
 @section('title','Корзина')
 @section('content')
 
-{{--    <div class="starter-template">--}}
-{{--        @foreach($category as $categories)--}}
-
-{{--            <div class="panel">--}}
-{{--                <a href="/{{$categories->code}}">--}}
-{{--                    <img src="http://internet-shop.tmweb.ru/storage/categories/mobile.jpg">--}}
-{{--                    <h2>{{$categories->name}}</h2>--}}
-{{--                </a>--}}
-{{--                <p>--}}
-{{--                    {{$categories->description}}--}}
-{{--                </p>--}}
-{{--            </div>--}}
-
-{{--        @endforeach--}}
-{{--    </div>--}}
 <div class="starter-template">
     <p class="alert alert-success">Добавлен товар iPhone X 64GB</p>
     <h1>Корзина</h1>

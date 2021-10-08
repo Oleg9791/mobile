@@ -23,6 +23,7 @@ class MainController extends Controller
     public function categories($code)
     {
         $categories = Category::where('code', $code)->first();
+//        dd($categories);
 //        $products = Product::where('category_id', $categories->id)->get();
         return view('categories', compact('categories'));
     }
