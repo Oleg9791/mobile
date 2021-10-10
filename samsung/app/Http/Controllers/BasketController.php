@@ -8,14 +8,26 @@ use function PHPUnit\Framework\isNull;
 
 class BasketController extends Controller
 {
+//    public function basket()
+//    {
+//        $orderId = session('orderId');
+//        if (!is_null($orderId)) {
+//            $order = Order::findOrFail($orderId);
+//        } else {
+//            $order = Order::findOrFail(1);
+//            session(['orderId' => 1]);
+//        }
+//        return view('basket', compact('order'));
+//    }
     public function basket()
     {
         $orderId = session('orderId');
-//        dd($orderId);
-        if (!is_null($orderId)) {
-            $order = Order::findOrFail($orderId);
+        if (is_null($orderId)) {
+            $order = Order::create()->id;
+        } else {
+            $order = Order::find($orderId);
         }
-        return view('basket',compact('order'));
+        return view('basket', compact('order'));
     }
 
     public function basketPlace()
