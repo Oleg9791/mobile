@@ -11,7 +11,10 @@ class MainController extends Controller
     public function index()
     {
         $products = Product::get();
+//        dd($products);
+
         return view('index', compact('products'));
+//        return view('index', ['products' => $products]);
     }
 
     public function category()
