@@ -23,6 +23,8 @@ Route::get('/basket/place', '\App\Http\Controllers\BasketController@basketPlace'
 
 Route::post('basket/add/{id}', '\App\Http\Controllers\BasketController@basketAdd')->name('basket-add');
 
+Route::post('basket/remove/{id}', '\App\Http\Controllers\BasketController@basketRemove')->name('basket-remove');
+
 Route::get('/{categories?}', '\App\Http\Controllers\MainController@categories')->name('categories');
 
 Route::get('/{categories}/{product?}', '\App\Http\Controllers\MainController@product')->name('product');

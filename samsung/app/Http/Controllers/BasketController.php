@@ -46,12 +46,44 @@ class BasketController extends Controller
         } else {
             $order = Order::find($orderId);
         }
+        if ($order->products->contains($productId)) {     // проверка что данный продукт уже содержится
 
-        $order->products()->attach($productId);
+            $pivotRow = $order->products()->where('product_id', $productId)->first()->pivot; // sql- запрос т.к. products() со скобками, иначе products относился бы к  where
+            $pivotRow->count++;
+            $pivotRow->update();
+          //  dd($pivotRow); // pivot добраться до самой строки pivot
+        } else {
+            $order->products()->attach($productId);
+
+        }
+
 //        dump($order->products);
 //        dump($order);
-        return view('basket', compact('order'));
+
+        return redirect()->route('basket');
+//        return view('basket', compact('order'));
 
     }
 
+    public function basketRemove($productId)
+    {
+        $orderId = session('order_Id');
+        if (is_null($orderId)) {
+            return redirect()->route('basket');
+        }
+        $order = Order::find($orderId);
+
+        if ($order->products->contains($productId)) {
+
+            $pivotRow = $order->products()->where('product_id', $productId)->first()->pivot;
+            $pivotRow->count++;
+            $pivotRow->update();
+        } else {
+            $order->products()->detach($productId);
+
+        }
+
+        return redirect()->route('basket');
+
+    }
 }
