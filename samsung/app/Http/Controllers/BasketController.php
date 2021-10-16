@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use function PHPUnit\Framework\isNull;
 
@@ -14,10 +15,11 @@ class BasketController extends Controller
 //        dump(session());
         if (!is_null($orderId)) {
             $order = Order::findOrFail($orderId);
-        } else {
-            $order = Order::findOrFail(1);
-            session(['order_Id' => 1]);
         }
+//        else {
+//            $order = Order::findOrFail(1);
+//            session(['order_Id' => 1]);
+//        }
         return view('basket', compact('order'));
 //        return view('basket', ['order' => $order]);
     }
@@ -32,9 +34,39 @@ class BasketController extends Controller
 //        return view('basket', compact('order'));
 //    }
 
+    public function basketConfirm(Request $request)
+    {
+        $orderId = session('order_Id');
+        if (is_null($orderId)) {
+            return redirect()->route('index');
+        }
+        $order = Order::find($orderId);
+//        $success = $order->saveOrder($request->name, $request->phone);
+//        dd($request->name);
+        $order->phone = $request->phone;
+        $order->name = $request->name;
+        $order->status = 1;
+        $order->save();
+        session()->forget('orderId');
+        session()->flash('success','ваш заказ принят');
+//        if ($success) {
+//            session()->flash('success', 'Ваш заказ принят в обработку');
+//        } else {
+//            session()->flash('warning', 'Случилась ошибка');
+//        }
+
+        return redirect()->route('index');
+    }
+
     public function basketPlace()
     {
-        return view('order');
+        $orderId = session('order_Id');
+        if (is_null($orderId)) {
+            return redirect()->route('index');
+        }
+        $order = Order::find($orderId);
+
+        return view('order', compact('order'));
     }
 
     public function basketAdd($productId)
@@ -51,11 +83,14 @@ class BasketController extends Controller
             $pivotRow = $order->products()->where('product_id', $productId)->first()->pivot; // sql- запрос т.к. products() со скобками, иначе products относился бы к  where
             $pivotRow->count++;
             $pivotRow->update();
-          //  dd($pivotRow); // pivot добраться до самой строки pivot
+            //  dd($pivotRow); //  где pivot добраться до самой строки pivot
         } else {
             $order->products()->attach($productId);
 
         }
+        $product = Product::find($productId);
+
+        session()->flash('success', 'Добавлен товар ' . $product->name);
 
 //        dump($order->products);
 //        dump($order);
@@ -76,12 +111,16 @@ class BasketController extends Controller
         if ($order->products->contains($productId)) {
 
             $pivotRow = $order->products()->where('product_id', $productId)->first()->pivot;
-            $pivotRow->count++;
-            $pivotRow->update();
-        } else {
-            $order->products()->detach($productId);
-
+            if ($pivotRow->count < 2) {
+                $order->products()->detach($productId);
+            } else {
+                $pivotRow->count--;
+                $pivotRow->update();
+            }
         }
+        $product = Product::find($productId);
+
+        session()->flash('warning', 'Удален товар ' . $product->name);
 
         return redirect()->route('basket');
 

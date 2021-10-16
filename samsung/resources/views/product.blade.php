@@ -1,7 +1,6 @@
-@extends('master',['file'=>'product'])
+@extends('Layouts.master',['file'=>'product'])
 @section('title','товар')
 @section('content')
-    <div class="starter-template">
         <h1>{{$product}}</h1>
         <h2>{{$product}}</h2>
         <p>Цена: <b>71990 ₽</b></p>
@@ -12,5 +11,4 @@
             <button type="submit" class="btn btn-success" role="button">Добавить в корзину</button>
 
             <input type="hidden" name="_token" value="jaVyGqqDKzvvkXOdhA4WuyYCKRJ17JM25bXvq3iK">        </form>
-    </div>
 @endsection
